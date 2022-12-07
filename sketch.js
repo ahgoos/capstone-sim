@@ -20,8 +20,12 @@ let maxp = 12;
 let tool = "region";
 let target = null;
 
+var utils = new p5.Utils();
+
+
 function setup() {
-  createCanvas(720, 400);
+  let canvas = createCanvas(innerWidth, innerHeight,);
+
   // Create all media channels
   for (let k of media) {
     channels[k] = new Channel(k);
@@ -51,7 +55,7 @@ function draw() {
   for (let i = memes.length - 1; i >= 0; i--) {
     memes[i].update();
     // If we should remove it from the global and local meme lists
-    if (memes[i].lifespan <= 0) {
+    if (memes[i].popularity <= 0) {
       let idx = memes[i].location.memes.indexOf(memes[i]);
       memes[i].location.memes.splice(idx,1);
       if (memes[i].location instanceof Channel) {
@@ -61,19 +65,57 @@ function draw() {
     }
   }
 
-  showData();
+  showData({
+    "FPS": frameRate().toFixed(0),
+    "Regions": regions.length,
+    "Channels": media.length,
+    "Memes": memes.length
+  });
 }
 
-function showData() {
+function windowResized() {
+  resizeCanvas(innerWidth, innerHeight);
+}
+
+// === UTILS === //
+
+function showData(_itemName) {
+  if (!document.getElementsByClassName("main-debug")[0]) {
+    debug = document.createElement('div');
+    debug.className = 'main-debug';
+    document.body.appendChild(debug);
+    debug.style.left = 2 + 'px';
+    debug.style.lineHeight = 1.3;
+    debug.style.fontFamily = "Consolas, Menlo, Monaco, monospace";
+    debug.style.fontSize = 11 + "px";
+    debug.style.fontWeight = 100;
+    debug.style.fontStyle = "normal";
+    debug.style.fontVariant = "normal";
+    debug.style.position = "absolute";
+    debug.style.marginLeft = 30 + "px";
+    debug.style.marginBottom = (innerHeight - height) + 30 + "px";
+    debug.style.left = 0 + "px";
+    debug.style.bottom = 0 + "px";
+    debug.style.color = "black";
+    debug.style.opacity = 0.5;
+    debug.style.background = "lightgrey";
+    debug.style.padding = "4px 6px";
+    debug.style.borderRadius = "4px";
+    debug.style.cursor = "default";
+    debug.style.zindex = "99999";
+  }
+
+  debug.innerHTML = "";
+
+  for (let i = 0; i < Object.keys(_itemName).length; i++) {
+    debug.innerHTML += "<i>" + Object.keys(_itemName)[i] + ": </i>" + Object.values(_itemName)[i] + "</br>";
+  }
   noStroke();
   fill(0);
   // for (let m of media){
   //   let y = (media.indexOf(m))*55+15;
   //   text(channels[m].name+"\n"+channels[m].memes.length+" Memes: "+channels[m].memes+"\n"+channels[m].targets.length+" Targets: "+channels[m].targets, 5, y);
   // }
-  text("Regions: " + regions.length, 5, height - 40);
-  text("Channels: " + media.length, 5, height - 25);
-  text("Memes: " + memes.length, 5, height - 10);
   if (target != null && target != 'border') {
     fill("rgba(157,178,189,0.59)");
     rect(mouseX + 10, mouseY, 80, 75);
@@ -106,7 +148,8 @@ function mousePressed() {
     regions.push(new_reg);
     for (let ch of Object.keys(new_reg.channels)) {
       // print(ch);
-      channels[ch].regions.push(new_reg);
+      // channels[ch].add(new_reg);
+      channels[ch].regions[new_reg.name] = new_reg;
     }
   }
   if (target instanceof Region) {

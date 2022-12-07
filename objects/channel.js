@@ -2,9 +2,8 @@ class Channel {
   constructor(type) {
     this.name = "Channel_"+type;
     this.type = type;
-    this.regions = [];
-    this.memes = [];
-    this.targets = [];
+    this.regions = {};
+    this.paths = {};
     switch (type) {
         case 'a':
         this.color = color('#FF9800');
@@ -25,64 +24,88 @@ class Channel {
         this.color = color('black');
     }
   }
-  
+
+  // add(_region) {
+  //   // print(_region);
+  //   this.regions[_region.name] = _region;
+  // }
+
   spread(meme, source) {
     meme.location = this;
-    let target = this.findTarget(source);
-    this.memes.push(meme);
-    this.targets.push(target);
-    meme.vel = p5.Vector.sub(target.pos, meme.pos).mult(0.01);
+    let dest = this.findDest(source);
+    let path = source.name + ">" + dest.name;
+    if (!this.paths[path]) {
+      this.paths[path] = [];
+    }
+    this.paths[path].push(meme);
+
+    // CHECK THIS IT'S WEIRD <---
+    meme.vel = p5.Vector.sub(dest.pos, meme.pos).mult(0.01);
+    // meme.vel.setMag(1);
     // print(this.memes.length, meme.name, source.name, target.name);
     // let reach = int(source.pop*0.2);
     // this.memes.push(new Meme(m.name.split('_')[1], source, m.format));
   }
   
-  findTarget(source) {
-    let mindist = width+height;
-    let target;
-    for (let other of this.regions) {
+  findDest(source) {
+    let mindist = width + height;
+    let dest;
+    for (let other of Object.values(this.regions)) {
       // print(other);
       let d = dist(source.pos.x, source.pos.y, other.pos.x, other.pos.y);
       if (d > 0 && d < mindist) {
         mindist = d;
-        target = other;
+        dest = other;
       }
     }
-    return target;
+    // print(dest);
+    return dest;
   }
   
   // Update channel
   update() {
-    for (let i = this.memes.length -1; i >= 0; i--) {
-      let meme = this.memes[i];
-      let target = this.targets[i];
-      let d = dist(meme.pos.x, meme.pos.y, target.pos.x, target.pos.y);
-      if (d < target.size) {
-        // print(meme.name+' arrived at '+target.name);
-        meme.location = target;
-        target.memes.push(meme);
-        this.memes.splice(i,1);
-        this.targets.splice(i,1);
+    for (let k of Object.keys(this.paths)) {
+      let path = this.paths[k];
+      let source = this.regions[split(k, ">")[0]];
+      let dest = this.regions[split(k, ">")[1]];
+      for (let i = path.length - 1; i >= 0; i--) {
+        let meme = path[i];
+        let d = dist(meme.pos.x, meme.pos.y, dest.pos.x, dest.pos.y);
+        if (d < dest.size) {
+          meme.location = dest;
+          dest.memes.push(meme);
+          path.splice(i, 1);
+        }
+        // Remove unpopular memes
+        if (meme.popularity <= 0) {
+          let idx = memes.indexOf(meme);
+          memes.splice(idx, 1);
+          path.splice(i, 1);
+        }
+      }
+      if (path.length <= 0) {
+        delete this.paths[k];
       }
     }
   }
   
   // Display channel
   display() {
+    for (let k of Object.keys(this.paths)) {
+      let path = this.paths[k];
+      let source = this.regions[split(k, ">")[0]];
+      let dest = this.regions[split(k, ">")[1]];
     // Loop through backwards
-    for (let i = this.memes.length - 1; i >= 0; i--) {
-      if (this.memes[i].lifespan <= 0) {
-        this.memes.splice(i,1);
-        this.targets.splice(i,1);
-      } else {
-        if (i == this.memes.length-1) {
-          this.memes[i].display(this.targets[i].pos);
+      for (let i = path.length - 1; i >= 0; i--) {
+        let meme = path[i];
+        if (i == path.length - 1) {
+          meme.display(source.pos);
         }
         if (i == 0) {
-          this.memes[i].display();
+          meme.display(dest.pos);
         }
-        if (i > 0 && i < this.memes.length-1) {
-          this.memes[i].display(this.memes[i+1].pos);
+        if (i < path.length - 1) {
+          meme.display(path[i + 1].pos);
         }
       }
     }

@@ -1,5 +1,5 @@
 class Region {
-  constructor(idx, x, y, population, freq = 0.05) {
+  constructor(idx, x, y, population, freq = 0.01) {
     this.name = "Region_" + idx;
     this.pos = createVector(x, y);
     this.pop = population;
@@ -24,14 +24,16 @@ class Region {
       memes.push(meme);
       this.memes.push(meme);
     }
-    // Share & display memes
+    // Share & update memes
     for (let i = this.memes.length-1; i >= 0; i--) {
       let meme = this.memes[i];
       let ch = this.channels[meme.format];
-      if (ch.regions.length > 1 && random() < 0.01) {
+      if (Object.keys(ch.regions).length > 1 && random() < 0.01) {
+        // print(meme);
         ch.spread(meme, this);
         this.memes.splice(i,1);
-      } else {
+      } else { 
+        meme.update();
         meme.display();
       }
     }
