@@ -29,7 +29,7 @@ function mousePos() {
 }
 
 // MAKE INSTANCE TO RENDER ALL INFO THIS WAY
-let stats = new p5.Utils();
+let utils = new p5.Utils();
 
 
 function setup() {
@@ -79,7 +79,7 @@ function draw() {
     channels[x].display();
   }
 
-  stats.debug("stats", {
+  utils.debug({
     "Tooltip": tool,
     "FPS": frameRate().toFixed(0),
     "Regions": regions.length,
