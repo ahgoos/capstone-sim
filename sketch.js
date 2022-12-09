@@ -4,27 +4,37 @@
  * @description Memes randomly spawn in Regions, and flow between them through Channels.
  */
 
-// Different types of channels (comms protocols)
-let media = ["a", "b", "c", "d", "e"];
-
 // All the regions, channels, and memes
 let regions = [];
+let media = ["a", "b", "c", "d", "e"]; // Different types of channels (comms protocols)
 let channels = {};
 let memes = [];
+let agents = [];
 
 // Bounds for region population size
 let minp = 2;
 let maxp = 12;
 
 // UI tools
-let tool = "region";
+let tools = ["edit", "inspect"];
+let t_idx = 0;
+let tool = tools[t_idx];
 let target = null;
+let xpan = 0;
+let ypan = 0;
+let cam_speed = 3;
 
-var utils = new p5.Utils();
+function mousePos() {
+  return createVector(mouseX - xpan, mouseY - ypan)
+}
+
+// MAKE INSTANCE TO RENDER ALL INFO THIS WAY
+let stats = new p5.Utils();
 
 
 function setup() {
-  let canvas = createCanvas(innerWidth, innerHeight,);
+  createCanvas(innerWidth, innerHeight);
+  background(230);
 
   // Create all media channels
   for (let k of media) {
@@ -34,6 +44,14 @@ function setup() {
 
 function draw() {
   background(230);
+  if (keyIsDown(87) || keyIsDown(38)) { ypan += cam_speed };
+  if (keyIsDown(68) || keyIsDown(39)) { xpan -= cam_speed };
+  if (keyIsDown(83) || keyIsDown(40)) { ypan -= cam_speed };
+  if (keyIsDown(65) || keyIsDown(37)) { xpan += cam_speed };
+
+  translate(xpan, ypan);
+  // fill(255, 0, 0);
+  // ellipse(0, 0, 10);
   target = null;
 
   // Handle all regions
@@ -42,8 +60,18 @@ function draw() {
     regions[i].display();
   }
 
-  // Draw lines to show connections between regions based on their shared channels
-  // showLinkedRegions();
+  // Update all memes
+  for (let i = memes.length - 1; i >= 0; i--) {
+    let meme = memes[i];
+    meme.update();
+    // If we should remove it from the global and local meme lists
+    if (meme.popularity <= 0) {
+      print(meme.name + " died");
+      let idx = meme.location.memes.indexOf(meme);
+      meme.location.memes.splice(idx, 1);
+      memes.splice(i, 1);
+    }
+  }
 
   // Handle all channels
   for (let x of media) {
@@ -51,26 +79,16 @@ function draw() {
     channels[x].display();
   }
 
-  // Update all memes
-  for (let i = memes.length - 1; i >= 0; i--) {
-    memes[i].update();
-    // If we should remove it from the global and local meme lists
-    if (memes[i].popularity <= 0) {
-      let idx = memes[i].location.memes.indexOf(memes[i]);
-      memes[i].location.memes.splice(idx,1);
-      if (memes[i].location instanceof Channel) {
-        memes[i].location.targets.splice(i,1);
-      }
-      memes.splice(i, 1);
-    }
-  }
-
-  showData({
+  stats.debug("stats", {
+    "Tooltip": tool,
     "FPS": frameRate().toFixed(0),
     "Regions": regions.length,
+    "Agents": agents.length,
     "Channels": media.length,
-    "Memes": memes.length
+    "Memes": memes.length,
+    "Coords": mousePos().x + "x" + mousePos().y
   });
+  showData();
 }
 
 function windowResized() {
@@ -79,80 +97,87 @@ function windowResized() {
 
 // === UTILS === //
 
-function showData(_itemName) {
-  if (!document.getElementsByClassName("main-debug")[0]) {
-    debug = document.createElement('div');
-    debug.className = 'main-debug';
-    document.body.appendChild(debug);
-    debug.style.left = 2 + 'px';
-    debug.style.lineHeight = 1.3;
-    debug.style.fontFamily = "Consolas, Menlo, Monaco, monospace";
-    debug.style.fontSize = 11 + "px";
-    debug.style.fontWeight = 100;
-    debug.style.fontStyle = "normal";
-    debug.style.fontVariant = "normal";
-    debug.style.position = "absolute";
-    debug.style.marginLeft = 30 + "px";
-    debug.style.marginBottom = (innerHeight - height) + 30 + "px";
-    debug.style.left = 0 + "px";
-    debug.style.bottom = 0 + "px";
-    debug.style.color = "black";
-    debug.style.opacity = 0.5;
-    debug.style.background = "lightgrey";
-    debug.style.padding = "4px 6px";
-    debug.style.borderRadius = "4px";
-    debug.style.cursor = "default";
-    debug.style.zindex = "99999";
-  }
-
-  debug.innerHTML = "";
-
-  for (let i = 0; i < Object.keys(_itemName).length; i++) {
-    debug.innerHTML += "<i>" + Object.keys(_itemName)[i] + ": </i>" + Object.values(_itemName)[i] + "</br>";
-  }
+function showData() {
+  // print(target);
   noStroke();
-  fill(0);
-  // for (let m of media){
-  //   let y = (media.indexOf(m))*55+15;
-  //   text(channels[m].name+"\n"+channels[m].memes.length+" Memes: "+channels[m].memes+"\n"+channels[m].targets.length+" Targets: "+channels[m].targets, 5, y);
-  // }
-  if (target != null && target != 'border') {
+  if (target instanceof Region) {
     fill("rgba(157,178,189,0.59)");
-    rect(mouseX + 10, mouseY, 80, 75);
+    rect(mousePos().x + 10, mousePos().y, 85, 90);
     fill(0);
     textStyle(BOLD);
-    text(target.name, mouseX + 15, mouseY + 15);
-    if (target instanceof Region) {
-      textStyle(NORMAL);
-      text("Agents: " + target.pop, mouseX + 15, mouseY + 35);
-      text("Channels: " + Object.keys(target.channels).length, mouseX + 15, mouseY + 50);
-      text("Memes: " + target.memes.length, mouseX + 15, mouseY + 65);
-      print('region '+Object.keys(target.channels));
-    }
+    text(target.name, mousePos().x + 15, mousePos().y + 15);
+    textStyle(NORMAL);
+    text("Agents: " + target.pop, mousePos().x + 15, mousePos().y + 35);
+    text("Channels: " + Object.keys(target.channels).length, mousePos().x + 15, mousePos().y + 50);
+    text("Memes: " + target.memes.length, mousePos().x + 15, mousePos().y + 65);
+    text("Pos: " + target.pos.x + ", " + target.pos.y, mousePos().x + 15, mousePos().y + 80)
   }
 }
 
-function showLinkedRegions() {
-  return null;
-}
+
+
 
 // Change tooltip on key press
 function keyPressed() {
-  return null;
+  // print(keyCode);
+  switch (keyCode) {
+    case 37:
+      break;
+    case 38:
+      break;
+    case 39:
+      break;
+    case 40:
+      break;
+    case 32:
+      t_idx++;
+      tool = tools[t_idx % tools.length];
+      // print(tool);
+      break;
+    default:
+      break;
+  }
 }
 
 // Add element on mouse press
 function mousePressed() {
-  if (target == null) {
-    let new_reg = new Region(regions.length, mouseX, mouseY, ceil(random(minp, maxp)));
-    regions.push(new_reg);
-    for (let ch of Object.keys(new_reg.channels)) {
-      // print(ch);
-      // channels[ch].add(new_reg);
-      channels[ch].regions[new_reg.name] = new_reg;
+  if (tool == "edit") {
+    if (target == null) {
+      let new_reg = new Region(regions.length, mousePos().x, mousePos().y, ceil(random(minp, maxp)));
+      regions.push(new_reg);
+      for (let ch of Object.keys(new_reg.channels)) {
+        // print(ch);
+        // channels[ch].add(new_reg);
+        channels[ch].regions[new_reg.name] = new_reg;
+      }
     }
   }
-  if (target instanceof Region) {
+  if (tool == "inspect") {
+    if (target instanceof Region) {
+      let idx = regions.indexOf(target);
+      regions.splice(idx, 1);
+      regions.push(target);
+    }
+  }
+}
+
+function mouseDragged() {
+  if (tool == "edit") {
+    if (target == null) {
+
+    }
+  }
+  if (tool == "inspect") {
+    if (target instanceof Region) {
+      target.move(mousePos().x, mousePos().y);
+    }
+  }
+}
+
+function mouseReleased() {
+  if (tool == "edit") {
+  }
+  if (tool == "inspect") {
     
   }
 }

@@ -1,13 +1,13 @@
 class Meme {
   constructor(idx, origin, format) {
-    this.name = "M_"+idx;
+    this.name = "M" + idx;
     this.size = 4;
     this.origin = origin;
     this.location = origin;
     this.pos = p5.Vector.add(origin.pos, p5.Vector.random2D().mult(random(origin.size-4)));
     this.vel = createVector(0,0);
     this.drag = 0.7;
-    this.popularity = 300;
+    this.popularity = 200;
     this.format = format;
     switch (format) {
       case 'a':
@@ -50,7 +50,7 @@ class Meme {
     stroke(120);
     // text(this.name,this.pos.x, this.pos.y-10);
     fill(this.color);
-    ellipse(this.pos.x,this.pos.y, this.size*2, this.size*2);   
+    ellipse(this.pos.x, this.pos.y, this.size * 2, this.size * 2);   
     if (other != null) {
       // print(other);
       strokeWeight(6);

@@ -1,6 +1,6 @@
 class Channel {
   constructor(type) {
-    this.name = "Channel_"+type;
+    this.name = "CH_" + type;
     this.type = type;
     this.regions = {};
     this.paths = {};
@@ -31,6 +31,12 @@ class Channel {
   // }
 
   spread(meme, source) {
+    if (Object.keys(this.regions).length <= 1) {
+      return false;
+    }
+    if (meme.popularity <= 0) {
+      throw this.name + " received " + meme.name + " with popularity 0!"
+    }
     meme.location = this;
     let dest = this.findDest(source);
     let path = source.name + ">" + dest.name;
@@ -45,10 +51,11 @@ class Channel {
     // print(this.memes.length, meme.name, source.name, target.name);
     // let reach = int(source.pop*0.2);
     // this.memes.push(new Meme(m.name.split('_')[1], source, m.format));
+    return true;
   }
   
   findDest(source) {
-    let mindist = width + height;
+    let mindist = Infinity;
     let dest;
     for (let other of Object.values(this.regions)) {
       // print(other);
@@ -71,17 +78,18 @@ class Channel {
       for (let i = path.length - 1; i >= 0; i--) {
         let meme = path[i];
         let d = dist(meme.pos.x, meme.pos.y, dest.pos.x, dest.pos.y);
+        meme.vel = p5.Vector.sub(dest.pos, meme.pos).mult(2 / d);
         if (d < dest.size) {
           meme.location = dest;
           dest.memes.push(meme);
           path.splice(i, 1);
         }
         // Remove unpopular memes
-        if (meme.popularity <= 0) {
-          let idx = memes.indexOf(meme);
-          memes.splice(idx, 1);
-          path.splice(i, 1);
-        }
+        // if (meme.popularity <= 0) {
+        //   let idx = memes.indexOf(meme);
+        //   memes.splice(idx, 1);
+        //   path.splice(i, 1);
+        // }
       }
       if (path.length <= 0) {
         delete this.paths[k];
