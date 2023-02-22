@@ -1,8 +1,8 @@
 /*
- * @name SimpleSIM v1
- * @frame 720,400
+ * @name SimpleSIM v3
  * @description Memes randomly spawn in Regions, and flow between them through Channels.
  */
+
 
 // All the regions, channels, and memes
 let regions = [];
@@ -16,7 +16,7 @@ let minp = 2;
 let maxp = 12;
 
 // UI tools
-let tools = ["edit", "inspect"];
+let tools = ["inspect", "edit"];
 let t_idx = 0;
 let tool = tools[t_idx];
 let target = null;
@@ -33,13 +33,20 @@ let utils = new p5.Utils();
 
 
 function setup() {
-  createCanvas(innerWidth, innerHeight);
+  var contHeight = document.getElementById("sketch-holder").offsetHeight;
+  var contWidth = document.getElementById("sketch-holder").offsetWidth;
+  var cnv = createCanvas(innerWidth, innerHeight);
+  cnv.parent("sketch-holder");
   background(230);
 
   // Create all media channels
   for (let k of media) {
     channels[k] = new Channel(k);
   }
+
+  // DOM elements
+  let play_button = createButton("Play");
+  play_button.parent("intro");
 }
 
 function draw() {
