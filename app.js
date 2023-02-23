@@ -1,46 +1,36 @@
 // Dependencies
-const express = require('express');
-const path = require('path');
-const url = require('url');
-const fs = require('fs');
-// const fb = require("firebase/app");
+var express = require('express');
+var path = require('path');
+var url = require('url');
+var fs = require('fs');
+var fb = require("firebase/app");
 // import * as firebase from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 
 // Local Modules
 // const router = require('./routes/router.js');
-const router = express.Router();
-
 
 // Server Initialization
-const app = express();
-const PORT = 3000;
-console.log("Express initialized, port " + PORT);
+var app = express();
+app.use(express.static('src'));
 
-// Middlewares
-app.use(express.json());
 
-// Routes will be written here
-app.use('/route', router);
-// Requests 
-router.get('/', (req, res) => {
-    res.send("Hello, Welcome to our Page");
-}
-);
-router.post('/', (req, res) => {
-    res.send("Hello, This was a post Request");
-}
-);
+// Routing
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src/pages/index.html'))
+});
+app.get('/sim', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src/pages/sim.html'))
+});
 
 
 // Server Listen Along with Database 
 // connection(in case of data persistence)
-app.listen(PORT, (error) => {
-    if (!error)
-        console.log("Server is Successfully Running and App is listening on port " + PORT);
-    else
-        console.log("Error occurred, server can't start", error);
+var server = app.listen(process.env.PORT || 3000, listen);
+
+function listen() {
+    var port = server.address().port;
+    console.log('Listening on port: ' + port);
 }
-);
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -60,5 +50,5 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-// fb.initializeApp(firebaseConfig);
-// console.log("Firebase initialized");
+fb.initializeApp(firebaseConfig);
+console.log("Firebase initialized");

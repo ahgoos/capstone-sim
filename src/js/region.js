@@ -33,7 +33,7 @@ class Region {
       this.memes.push(meme);
     }
     // Share & update memes
-    for (let i = this.memes.length-1; i >= 0; i--) {
+    for (let i = this.memes.length - 1; i >= 0; i--) {
       let meme = this.memes[i];
       let ch = this.channels[meme.format];
       for (let a of this.agents) {
@@ -49,8 +49,8 @@ class Region {
       }
       meme.update();
       meme.display();
-      }
     }
+  }
 
 
   display() {
@@ -72,3 +72,6 @@ class Region {
 
   }
 }
+
+
+// module.exports = { Region };

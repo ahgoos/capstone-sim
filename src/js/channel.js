@@ -5,7 +5,7 @@ class Channel {
     this.regions = {};
     this.paths = {};
     switch (type) {
-        case 'a':
+      case 'a':
         this.color = color('#FF9800');
         break;
       case 'b':
@@ -53,7 +53,7 @@ class Channel {
     // this.memes.push(new Meme(m.name.split('_')[1], source, m.format));
     return true;
   }
-  
+
   findDest(source) {
     let mindist = Infinity;
     let dest;
@@ -68,7 +68,7 @@ class Channel {
     // print(dest);
     return dest;
   }
-  
+
   // Update channel
   update() {
     for (let k of Object.keys(this.paths)) {
@@ -96,14 +96,14 @@ class Channel {
       }
     }
   }
-  
+
   // Display channel
   display() {
     for (let k of Object.keys(this.paths)) {
       let path = this.paths[k];
       let source = this.regions[split(k, ">")[0]];
       let dest = this.regions[split(k, ">")[1]];
-    // Loop through backwards
+      // Loop through backwards
       for (let i = path.length - 1; i >= 0; i--) {
         let meme = path[i];
         if (i == path.length - 1) {
@@ -119,3 +119,5 @@ class Channel {
     }
   }
 }
+
+// module.exports = { Channel };

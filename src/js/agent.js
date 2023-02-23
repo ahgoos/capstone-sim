@@ -33,3 +33,5 @@ class Agent {
         // print(this.name + " downvotes " + meme.name + " to: " + meme.popularity);
     }
 }
+
+// module.exports = { Agent };

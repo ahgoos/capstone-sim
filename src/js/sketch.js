@@ -3,7 +3,6 @@
  * @description Memes randomly spawn in Regions, and flow between them through Channels.
  */
 
-
 // All the regions, channels, and memes
 let regions = [];
 let media = ["a", "b", "c", "d", "e"]; // Different types of channels (comms protocols)
@@ -45,8 +44,9 @@ function setup() {
   }
 
   // DOM elements
-  let play_button = createButton("Play");
-  play_button.parent("intro");
+  let back_btn = createButton("Home");
+  back_btn.mousePressed(() => window.location.href = "/");
+  back_btn.parent("intro");
 }
 
 function draw() {
@@ -185,6 +185,6 @@ function mouseReleased() {
   if (tool == "edit") {
   }
   if (tool == "inspect") {
-    
+
   }
 }
