@@ -14,7 +14,8 @@ class Region {
     for (let i = 0; i < map(this.pop, minp + 1, maxp, 1, media.length); i++) {
       this.channels[media[i]] = channels[media[i]];
     }
-    this.color = color(random(255), random(255), random(255), 180);
+    // Dynamic color setting
+    this.color = color(random(0, floor(255 * (mouseX / width))), random(0, 165), random(37, 180), 180);
     this.spawn_rate = freq;
     this.spread_threshold = threshold;
     this.memes = [];
