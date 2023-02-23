@@ -1,21 +1,29 @@
 {
-  "name": "capstone-sim",
-  "description": "Complete work products for the simulation deliverable component of my undergraduate Capstone project at Minerva University.",
-  "version": "1.0.0",
-  "main": "app.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "firebase": "^9.17.1"
+  },
   "devDependencies": {
     "dotenv": "^16.0.3",
     "nodemon": "^2.0.20"
   },
   "scripts": {
-    "build": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "name": "capstone-sim",
+  "description": "Complete work products for the simulation deliverable component of my undergraduate Capstone project at Minerva University.",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AustinPerzben/capstone-simdev.git"
   },
   "author": "Agustin Perez del Castillo",
   "license": "ISC",
-  "dependencies": {
-    "express": "^4.18.2",
-    "firebase": "^9.17.1",
-    "node": "^19.6.0"
-  }
+  "bugs": {
+    "url": "https://github.com/AustinPerzben/capstone-simdev/issues"
+  },
+  "homepage": "https://github.com/AustinPerzben/capstone-simdev#readme"
 }
