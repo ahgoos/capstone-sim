@@ -22,19 +22,22 @@ let target = null;
 let xpan = 0;
 let ypan = 0;
 let cam_speed = 3;
+// let sz = 420;
 
 function mousePos() {
   return createVector(mouseX - xpan, mouseY - ypan)
+}
+function windowResized() {
+  resizeCanvas(document.body.offsetWidth, document.body.offsetHeight);
 }
 
 // MAKE INSTANCE TO RENDER ALL INFO THIS WAY
 let utils = new p5.Utils();
 
 
+
 function setup() {
-  var contHeight = document.getElementById("sketch-holder").offsetHeight;
-  var contWidth = document.getElementById("sketch-holder").offsetWidth;
-  var cnv = createCanvas(innerWidth, innerHeight);
+  var cnv = createCanvas(document.body.offsetWidth, document.body.offsetHeight);
   cnv.parent("sketch-holder");
   background(230);
 
@@ -44,9 +47,8 @@ function setup() {
   }
 
   // DOM elements
-  let back_btn = createButton("Home");
-  back_btn.mousePressed(() => window.location.href = "/");
-  back_btn.parent("intro");
+  // let name_field = createInput();
+  // name_field.parent("sketch-holder");
 }
 
 function draw() {
@@ -98,9 +100,9 @@ function draw() {
   showData();
 }
 
-function windowResized() {
-  resizeCanvas(innerWidth, innerHeight);
-}
+// function windowResized() {
+//   resizeCanvas(innerWidth, innerHeight);
+// }
 
 // === UTILS === //
 
@@ -125,8 +127,12 @@ function showData() {
 
 
 // Change tooltip on key press
-function keyPressed() {
-  // print(keyCode);
+function keyPressed(event) {
+  let cmd_keys = [37, 38, 39, 40, 32, 65, 68, 83, 87];
+  // if (cmd_keys.includes(keyCode)) {
+  //   event.preventDefault();
+  // }
+  // alert("key: " + keyCode);
   switch (keyCode) {
     case 37:
       break;
