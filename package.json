@@ -1,0 +1,15 @@
+{
+  "name": "capstone-sim",
+  "version": "1.0.0",
+  "description": "Complete work products for the simulation deliverable component of my undergraduate Capstone project at Minerva University.",
+  "main": "sketch.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^9.17.1"
+  }
+}

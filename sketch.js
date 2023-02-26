@@ -2,6 +2,8 @@
  * @name SimpleSIM v3
  * @description Memes randomly spawn in Regions, and flow between them through Channels.
  */
+// import { writeUserData } from "./index.js";
+
 
 // All the regions, channels, and memes
 let regions = [];
@@ -37,6 +39,9 @@ let utils = new p5.Utils();
 
 
 function setup() {
+  fb.writeUserData("3", "test", "test", "test");
+  console.log(fb.firebaseConfig);
+
   var cnv = createCanvas(document.body.offsetWidth, document.body.offsetHeight);
   cnv.parent("sketch-holder");
   background(230);
@@ -47,8 +52,7 @@ function setup() {
   }
 
   // DOM elements
-  // let name_field = createInput();
-  // name_field.parent("sketch-holder");
+  let name_field = ("save-sim-name");
 }
 
 function draw() {

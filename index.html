@@ -11,13 +11,17 @@
   <script src="src/lib/quicksettings.js"></script>
   <script src="src/lib/p5.gui.js"></script>
   <!-- SCRIPTS -->
+  <script type="module" src="index.js"></script>
+  <script type="module">
+    import * as fireb from "./index.js";
+    window.fb = fireb;
+  </script>
   <script src="sketch.js"></script>
   <script src="src/js/agent.js"></script>
   <script src="src/js/channel.js"></script>
   <script src="src/js/meme.js"></script>
   <script src="src/js/region.js"></script>
   <!-- STYLING -->
-  <script src="/dnd.js"></script>
   <script src="https://kit.fontawesome.com/5456001138.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" type="text/css" href="src/css/styles.css" />
   <meta charset="utf-8" />
@@ -31,84 +35,90 @@
     <div id="sketch-holder"></div>
   </header>
   <main>
-    <div draggable="true" class="card">
-      <div class="info">
+    <div class="container">
+      <div class="card">
         <h3>About this Site</h3>
-        <a href="#h1" id="h1" class="closed-card"><i class="fa fa-expand"></i></a>
-        <a href="#/" class="open-card"><i class="fa fa-compress"></i></a>
-        <div class="card-content">
+        <!-- (A) TOGGLE BUTTON -->
+        <input id="about" type="checkbox" class="togCheck" checked />
+        <label for="about" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
+        <!-- (B) CONTENT -->
+        <div class="togContent">
           <p>This simulation is a tool to explore the dynamics of information diffusion in social networks.</p>
-          <p>The simulation is based on a network of agents, each of which has a certain number of memes. The memes are
+          <p>The simulation is based on a network of agents, each of which has a certain number of memes. The memes
+            are
             represented by circles, and the agents are represented by squares. The agents can communicate with each
             other
             through channels, which are represented by lines. The agents can also communicate with each other through
             memes.
-            When an agent is exposed to a meme, it will adopt it with a certain probability. The probability of adoption
+            When an agent is exposed to a meme, it will adopt it with a certain probability. The probability of
+            adoption
             depends on the number of memes the agent already has, and the number of memes the agent is exposed to.</p>
         </div>
       </div>
-    </div>
-    <div draggable="true" class="card gui">
-      <div class="info">
+      <div class="card gui">
         <h3>Controls</h3>
-        <a href="#h2" id="h2" class="closed-card"><i class="fa fa-expand"></i></a>
-        <a href="#/" class="open-card"><i class="fa fa-compress"></i></a>
-        <div class="card-content">
+        <!-- (A) TOGGLE BUTTON -->
+        <input id="controls" type="checkbox" class="togCheck" />
+        <label for="controls" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
+        <!-- (B) CONTENT -->
+        <div class="togContent">
           <p>
             Select different <i style="color: #3c78d8;" class="fa fa-circle-nodes"></i> scenarios to explore and play
             with.
-            </p>
-            </div>
+          </p>
+          <input id="save-sim-name" type="text" placeholder="Name your experiment..." />
+          <button id="save-sim" type="submit">Save</button>
+          </div>
       </div>
-    </div>
-    <div draggable="true" class="card">
-      <div class="info">
+      <div class="card gui">
         <h3>Scenarios</h3>
-        <a href="#h3" id="h3" class="closed-card"><i class="fa fa-expand"></i></a>
-        <a href="#/" class="open-card"><i class="fa fa-compress"></i></a>
-        <div class="card-content">
+        <!-- (A) TOGGLE BUTTON -->
+        <input id="scenarios" type="checkbox" class="togCheck" />
+        <label for="scenarios" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
+        <!-- (B) CONTENT -->
+        <div class="togContent">
           <ul>
             <li>Isolation:</li>
             <li>Blocking:</li>
           </ul>
         </div>
       </div>
+      <div class="card">
+        <h3>Setup</h3>
+        <!-- (A) TOGGLE BUTTON -->
+        <input id="setup" type="checkbox" class="togCheck" />
+        <label for="setup" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
+        <!-- (B) CONTENT -->
+        <div class="togContent">
+          <ol>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ol>
+        </div>
       </div>
-      <div draggable="true" class="card">
-        <div class="info">
-          <a href="#h4" id="h4" class="closed-card"><i class="fa fa-expand"></i></a>
-          <a href="#/" class="open-card"><i class="fa fa-compress"></i></a>
-          <h3>Setup</h3>
-          <div class="card-content">
-            <ol>
-              <li></li>
-              <li></li>
-              <li></li>
-            </ol>
-          </div>
+      <div class="card">
+        <h3>Restrictions</h3>
+        <!-- (A) TOGGLE BUTTON -->
+        <input id="restrictions" type="checkbox" class="togCheck" />
+        <label for="restrictions" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
+        <!-- (B) CONTENT -->
+        <div class="togContent">
+          <ul>
+            <li> </li>
+            <li> </li>
+          </ul>
+        </div>
       </div>
-      </div>
-      <div draggable="true" class="card">
-        <div class="info">
-          <h3>Restrictions</h3>
-          <a href="#h5" id="h5" class="closed-card"><i class="fa fa-expand"></i></a>
-          <a href="#/" class="open-card"><i class="fa fa-compress"></i></a>
-          <div class="card-content">
-            <ul>
-              <li> </li>
-              <li> </li>
-            </ul>
-          </div>
-      </div>
-      </div>
-      <div draggable="true" class="card">
-        <div class="info">
-          <h3>Collaborate and Explore</h3>
-          <a href="#h6" id="h6" class="closed-card"><i class="fa fa-expand"></i></a>
-          <a href="#/" class="open-card"><i class="fa fa-compress"></i></a>
-          <div class="card-content">
-            <p>Explore Scenarios gallery and choose </p>
-          </div>
+      <div class="card">
+        <h3>Collaborate and Explore</h3>
+        <!-- (A) TOGGLE BUTTON -->
+        <input id="explore" type="checkbox" class="togCheck" />
+        <label for="explore" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
+        <!-- (B) CONTENT -->
+        <div class="togContent">
+          <p>Explore Scenarios gallery and choose </p>
+        </div>
         </div>
     </div>
   </main>
