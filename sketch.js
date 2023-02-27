@@ -30,7 +30,7 @@ function mousePos() {
   return createVector(mouseX - xpan, mouseY - ypan)
 }
 function windowResized() {
-  resizeCanvas(document.body.offsetWidth, document.body.offsetHeight);
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 // MAKE INSTANCE TO RENDER ALL INFO THIS WAY
@@ -39,10 +39,8 @@ let utils = new p5.Utils();
 
 
 function setup() {
-  fb.writeUserData("3", "test", "test", "test");
-  console.log(fb.firebaseConfig);
 
-  var cnv = createCanvas(document.body.offsetWidth, document.body.offsetHeight);
+  var cnv = createCanvas(windowWidth, windowHeight);
   cnv.parent("sketch-holder");
   background(230);
 
@@ -79,7 +77,7 @@ function draw() {
     meme.update();
     // If we should remove it from the global and local meme lists
     if (meme.popularity <= 0) {
-      print(meme.name + " died");
+      // print(meme.name + " died");
       let idx = meme.location.memes.indexOf(meme);
       meme.location.memes.splice(idx, 1);
       memes.splice(i, 1);
@@ -92,15 +90,15 @@ function draw() {
     channels[x].display();
   }
 
-  utils.debug({
-    "Tooltip": tool,
-    "FPS": frameRate().toFixed(0),
-    "Regions": regions.length,
-    "Agents": agents.length,
-    "Channels": media.length,
-    "Memes": memes.length,
-    "Coords": mousePos().x + "x" + mousePos().y
-  });
+  // utils.debug({
+  //   "Tooltip": tool,
+  //   "FPS": frameRate().toFixed(0),
+  //   "Regions": regions.length,
+  //   "Agents": agents.length,
+  //   "Channels": media.length,
+  //   "Memes": memes.length,
+  //   "Coords": mousePos().x + "x" + mousePos().y
+  // });
   showData();
 }
 

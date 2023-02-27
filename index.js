@@ -27,13 +27,14 @@ export const firebaseConfig = {
 // });
 export let app = initializeApp(firebaseConfig);
 
-export function writeUserData(userId, name, email, imageUrl) {
+export function saveSim() {
+    var sim_name = document.getElementById("save-sim-name").value;
     const db = getDatabase(app);
-    const reference = ref(db, 'users/' + userId);
+    const reference = ref(db, 'sims/' + sim_name);
     set(reference, {
-        username: name,
-        email: email,
-        profile_picture: imageUrl
+        _regions: regions,
+        _media: media,
+        _channels: channels 
     });
     console.log("Wrote data to database");
 }

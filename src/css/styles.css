@@ -26,6 +26,15 @@ body {
   color: #636363;
 }
 
+header {
+  height: fit-content;
+  /* background-image: url("../../favicons/android-chrome-192x192.png"); */
+  background-image: url("../../favicons/mstile-150x150.png");
+  background-size: 150px;
+  background-repeat: no-repeat;
+  background-position: -20px -20px;
+}
+
 footer {
   border-top: #c0c0c0 .5px solid;
   margin-top: auto;
@@ -38,6 +47,7 @@ footer {
 
 canvas {
   position: absolute;
+  /* border: 1px solid #ff0000; */
   top: 0;
   left: 0;
   display: block;
@@ -64,7 +74,7 @@ input {
   outline: none;
   padding-top: 5px;
   border-bottom: 1px solid #b9b9b9;
-  border-radius: 5px 5px 0 0;
+  border-radius: 2px 5px 0 0;
   color: #636363;
   background: transparent;
   width: 20em;
@@ -102,9 +112,24 @@ p {
   padding: 5px 0 5px 0;
 }
 
+a {
+  text-decoration: underline;
+  font-weight: bold;
+  color: #636363;
+}
+
+li {
+  padding: 5px 0 5px 0;
+}
+
 i {
   color: #848484;
   width: fit-content;
+}
+
+h3>i {
+  padding: 0 10px 0 5px;
+  /* border: 1px solid red; */
 }
 
 .container {
@@ -133,26 +158,14 @@ i {
   border: 1px solid red;
 } */
 
-.pull-tab {
-  border-top: 2px solid #555;
-  width: 10px;
-  transform: rotate(-45deg);
-  position: absolute;
-  bottom: 10px;
-  right: 1px;
-  pointer-events: none;
-  border-radius: 25%;
-}
-
-
 
 .card {
   position: relative;
   /* border: .5px dashed #666; */
-  background-color: #b7b7b750;
+  background-color: #d7d7d7c8;
   border-radius: 0px 15px 15px 0px;
   margin: 10px;
-  padding: 5px 30px 5px 5px;
+  padding: 5px 50px 5px 5px;
   width: fit-content;
   min-width: 260px;
 }

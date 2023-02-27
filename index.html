@@ -3,7 +3,13 @@
 
 <head>
   <title>CP - Interactive Simulation</title>
-  <link rel="icon" type="image/svg" href="./src/favicon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png">
+  <link rel="manifest" href="./favicons/site.webmanifest">
+  <link rel="mask-icon" href="./favicons/safari-pinned-tab.svg" color="#797979">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffd7d7">
   <!-- LIBS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
@@ -31,6 +37,7 @@
 <body>
   <header>
     <h1>
+      <!-- <img id="logo" src="./favicons/android-chrome-192x192.png"></img> -->
       CP: Interactive Simulation
     </h1>
     <div id="sketch-holder"></div>
@@ -38,10 +45,10 @@
   <main>
     <div class="container">
       <div class="card">
-        <h3>About this Site</h3>
+        <h3><i class="fa fa-info-circle"></i>About the Project</h3>
         <!-- (A) TOGGLE BUTTON -->
         <input id="about" type="checkbox" class="togCheck" checked />
-        <label for="about" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
+        <label for="about" class="togButton"><i class="fa fa-caret-down"></i></label>
         <!-- (B) CONTENT -->
         <div class="togContent">
           <p>This simulation is a tool to explore the dynamics of information diffusion in social networks.</p>
@@ -57,70 +64,81 @@
         </div>
       </div>
       <div class="card gui">
-        <h3>Controls</h3>
+        <h3><i class="fa fa-gamepad"></i>Controls</h3>
         <!-- (A) TOGGLE BUTTON -->
         <input id="controls" type="checkbox" class="togCheck" />
         <label for="controls" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
         <!-- (B) CONTENT -->
         <div class="togContent">
           <p>
-            Select different <i style="color: #3c78d8;" class="fa fa-circle-nodes"></i> scenarios to explore and play
-            with.
+            <b>Keys</b> - SPACE to toggle Edit and Inspect Mode<br>
           </p>
-          <input id="save-sim-name" type="text" placeholder="Name your experiment..." />
-          <button id="save-sim" type="submit">Save</button>
+          <p>
+            <b>Mouse</b> - Click to add Regions (Edit Mode)<br>
+            <b style="color: transparent">Mouse</b> - Drag Regions to move them (Inspect Mode)<br>
+            <b style="color: transparent">Mouse</b> - Hover over objects to learn about them
+          </p>
           </div>
       </div>
       <div class="card gui">
-        <h3>Scenarios</h3>
+        <h3><i class="fa fa-circle-nodes"></i>Scenarios</h3>
         <!-- (A) TOGGLE BUTTON -->
         <input id="scenarios" type="checkbox" class="togCheck" />
         <label for="scenarios" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
         <!-- (B) CONTENT -->
         <div class="togContent">
+          <p>
+            Explore different <i class="fa fa-circle-nodes"></i>scenarios to learn from:
+          </p>
           <ul>
-            <li>Isolation:</li>
-            <li>Blocking:</li>
+            <li><a href="#">Cultural Delays</a> - Test how far a Meme can travel, if given enough time</li>
+            <li><a href="#">Media Isolation</a> - Investigate how a lack of access to popular Channels affects small Regions</li>
           </ul>
         </div>
       </div>
       <div class="card">
-        <h3>Setup</h3>
+        <h3><i class="fa fa-sliders"></i>Setup</h3>
         <!-- (A) TOGGLE BUTTON -->
         <input id="setup" type="checkbox" class="togCheck" />
         <label for="setup" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
         <!-- (B) CONTENT -->
         <div class="togContent">
+          <p style="color: rgb(215, 68, 68)">
+            <i style="color: rgb(215, 68, 68)" class="fa fa-hammer"></i> coming soon...
+          </p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h3><i class="fa fa-puzzle-piece"></i>Experiments</h3>
+        <!-- (A) TOGGLE BUTTON -->
+        <input id="experiments" type="checkbox" class="togCheck" />
+        <label for="experiments" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
+        <!-- (B) CONTENT -->
+        <div class="togContent">
+          <input id="save-sim-name" type="text" placeholder="Name your experiment..." />
+          <button id="save-sim" type="submit" onclick="fb.saveSim()">Save</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3><i class="fa fa-warning"></i>Limitations</h3>
+        <!-- (A) TOGGLE BUTTON -->
+        <input id="limitations" type="checkbox" class="togCheck" />
+        <label for="limitations" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
+        <!-- (B) CONTENT -->
+        <div class="togContent">
           <ol>
-            <li></li>
-            <li></li>
-            <li></li>
+            <li>This simulation is not a model of reality. It is a tool to
+              explore
+              the dynamics of cultural information transfer through media in macro-social system. It is not meant to be used as a
+              predictive
+              tool.</i>
+            <li>You are likely to find a few bugs while exploring this site. I'm doing my best to find and fix them all, but some
+              still escape me! Please <a href="">submit a bug report</a> if you think something is not working the way it should!
+            </li>
           </ol>
         </div>
       </div>
-      <div class="card">
-        <h3>Restrictions</h3>
-        <!-- (A) TOGGLE BUTTON -->
-        <input id="restrictions" type="checkbox" class="togCheck" />
-        <label for="restrictions" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
-        <!-- (B) CONTENT -->
-        <div class="togContent">
-          <ul>
-            <li> </li>
-            <li> </li>
-          </ul>
-        </div>
-      </div>
-      <div class="card">
-        <h3>Collaborate and Explore</h3>
-        <!-- (A) TOGGLE BUTTON -->
-        <input id="explore" type="checkbox" class="togCheck" />
-        <label for="explore" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
-        <!-- (B) CONTENT -->
-        <div class="togContent">
-          <p>Explore Scenarios gallery and choose </p>
-        </div>
-        </div>
     </div>
   </main>
 
