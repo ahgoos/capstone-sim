@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>CP - Interactive Simulation</title>
+  <title>Memescapes</title>
   <link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="./favicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png">
@@ -36,10 +36,12 @@
 
 <body>
   <header>
-    <h1>
-      <!-- <img id="logo" src="./favicons/android-chrome-192x192.png"></img> -->
-      CP: Interactive Simulation
-    </h1>
+    <div class="title">
+      <img id="logo" src="./favicons/mstile-150x150.png"></img>
+      <h1>
+        Memescapes<span id="sim-context"></span>
+        </h1>
+    </div>
     <div id="sketch-holder"></div>
   </header>
   <main>
@@ -51,16 +53,18 @@
         <label for="about" class="togButton"><i class="fa fa-caret-down"></i></label>
         <!-- (B) CONTENT -->
         <div class="togContent">
-          <p>This simulation is a tool to explore the dynamics of information diffusion in social networks.</p>
-          <p>The simulation is based on a network of agents, each of which has a certain number of memes. The memes
-            are
-            represented by circles, and the agents are represented by squares. The agents can communicate with each
-            other
-            through channels, which are represented by lines. The agents can also communicate with each other through
-            memes.
-            When an agent is exposed to a meme, it will adopt it with a certain probability. The probability of
-            adoption
-            depends on the number of memes the agent already has, and the number of memes the agent is exposed to.</p>
+          <p>The background to this entire site is the canvas for a playable simulation to better
+            understand the relationship between global media and the spread of cultural information
+            across regions and over time.</p>
+          <p>
+            The simulation is meant to help you understand the relationship between global media and cultural information
+            flow. Memetics is adopted as the representational framework for the macro-social model implemented in the simulation.
+            The project seeks to identify factors that influence the spread of cultural information, investigate the mechanisms
+            that lead to emergent phenomena. You're encouraged to experiment anc explore different scenarios.
+          </p>
+          <p>
+            Memes are color-coded to represent the Channel they travel through.
+          </p>
         </div>
       </div>
       <div class="card gui">
@@ -72,13 +76,14 @@
         <div class="togContent">
           <p>
             <b>Keys</b> - SPACE to toggle Edit and Inspect Mode<br>
+            <b style="color: transparent">Keys</b> - ARROW KEYS to move the camera<br>
           </p>
           <p>
             <b>Mouse</b> - Click to add Regions (Edit Mode)<br>
             <b style="color: transparent">Mouse</b> - Drag Regions to move them (Inspect Mode)<br>
             <b style="color: transparent">Mouse</b> - Hover over objects to learn about them
           </p>
-          </div>
+        </div>
       </div>
       <div class="card gui">
         <h3><i class="fa fa-circle-nodes"></i>Scenarios</h3>
@@ -92,7 +97,8 @@
           </p>
           <ul>
             <li><a href="#">Cultural Delays</a> - Test how far a Meme can travel, if given enough time</li>
-            <li><a href="#">Media Isolation</a> - Investigate how a lack of access to popular Channels affects small Regions</li>
+            <li><a href="#">Media Isolation</a> - Investigate how a lack of access to popular Channels affects small
+              Regions</li>
           </ul>
         </div>
       </div>
@@ -108,7 +114,7 @@
           </p>
         </div>
       </div>
-      
+
       <div class="card">
         <h3><i class="fa fa-puzzle-piece"></i>Experiments</h3>
         <!-- (A) TOGGLE BUTTON -->
@@ -130,11 +136,14 @@
           <ol>
             <li>This simulation is not a model of reality. It is a tool to
               explore
-              the dynamics of cultural information transfer through media in macro-social system. It is not meant to be used as a
+              the dynamics of cultural information transfer through media in macro-social system. It is not meant to be
+              used as a
               predictive
               tool.</i>
-            <li>You are likely to find a few bugs while exploring this site. I'm doing my best to find and fix them all, but some
-              still escape me! Please <a href="">submit a bug report</a> if you think something is not working the way it should!
+            <li>You are likely to find a few bugs while exploring this site. I'm doing my best to find and fix them all,
+              but some
+              still escape me! Please <a href="">submit a bug report</a> if you think something is not working the way
+              it should!
             </li>
           </ol>
         </div>

@@ -72,7 +72,16 @@ class Region {
     this.pos = createVector(_x, _y);
 
   }
+
+  toJSON() {
+    return {
+      name: this.name,
+      pos: {
+        x: this.pos.x,
+        y: this.pos.y
+      },
+      pop: this.pop,
+      memes: this.memes.map(m => m.name)
+    };
+  }
 }
-
-
-// module.exports = { Region };

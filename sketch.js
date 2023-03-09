@@ -18,6 +18,7 @@ let maxp = 12;
 
 // UI tools
 let tools = ["inspect", "edit"];
+let status_check = false;
 let t_idx = 0;
 let tool = tools[t_idx];
 let target = null;
@@ -55,10 +56,10 @@ function setup() {
 
 function draw() {
   background(230);
-  if (keyIsDown(87) || keyIsDown(38)) { ypan += cam_speed };
-  if (keyIsDown(68) || keyIsDown(39)) { xpan -= cam_speed };
-  if (keyIsDown(83) || keyIsDown(40)) { ypan -= cam_speed };
-  if (keyIsDown(65) || keyIsDown(37)) { xpan += cam_speed };
+  if (keyIsDown(38)) { ypan += cam_speed };
+  if (keyIsDown(39)) { xpan -= cam_speed };
+  if (keyIsDown(40)) { ypan -= cam_speed };
+  if (keyIsDown(37)) { xpan += cam_speed };
 
   translate(xpan, ypan);
   // fill(255, 0, 0);
@@ -109,7 +110,6 @@ function draw() {
 // === UTILS === //
 
 function showData() {
-  // print(target);
   noStroke();
   if (target instanceof Region) {
     fill("rgba(157,178,189,0.59)");
@@ -130,7 +130,7 @@ function showData() {
 
 // Change tooltip on key press
 function keyPressed(event) {
-  let cmd_keys = [37, 38, 39, 40, 32, 65, 68, 83, 87];
+  let cmd_keys = [37, 38, 39, 40, 32];
   // if (cmd_keys.includes(keyCode)) {
   //   event.preventDefault();
   // }
@@ -147,7 +147,10 @@ function keyPressed(event) {
     case 32:
       t_idx++;
       tool = tools[t_idx % tools.length];
-      // print(tool);
+      print(tool);
+      break;
+    case 83:
+      print("memes:", memes.length, "\nagents:", agents.length)
       break;
     default:
       break;
@@ -195,4 +198,20 @@ function mouseReleased() {
   if (tool == "inspect") {
 
   }
+}
+
+
+function exportSim() {
+  let exportData = {
+    _regions: regions.map(r => r.toJSON()),
+    _memes: memes.map(m => m.toJSON()),
+    _agents: agents.map(a => a.toJSON()),
+    _channels: [],
+    _media: media
+  };
+  for (let k of media) {
+    exportData._channels.push(channels[k].toJSON());
+  }
+
+  return exportData;
 }

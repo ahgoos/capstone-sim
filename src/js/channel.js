@@ -118,6 +118,31 @@ class Channel {
       }
     }
   }
-}
 
-// module.exports = { Channel };
+  toJSON() {
+    let output = {
+      name: this.name,
+      type: this.type,
+      regions: [],
+      paths: [],
+      color: this.color.toString()
+    };
+
+    for (let r of Object.values(this.regions)) {
+      output.regions.push(r.name);
+    }
+    for (let p of Object.keys(this.paths)) {
+      let path = this.paths[p];
+      let memes = [];
+      for (let m of path) {
+        memes.push(m.name);
+      }
+      output.paths.push({
+        source: split(p, ">")[0],
+        dest: split(p, ">")[1],
+        memes: memes
+      });
+    }
+    return output;
+  }
+}

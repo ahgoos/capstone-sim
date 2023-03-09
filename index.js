@@ -13,7 +13,6 @@ export const firebaseConfig = {
     appId: "1:930500695794:web:3ca9c01512c1385a3ce26b",
     measurementId: "G-TKCFZJHVCB"
 };
-
 // // Get a reference to the database service
 // const auth = getAuth(app);
 // // All the regions, channels, and memes
@@ -31,11 +30,9 @@ export function saveSim() {
     var sim_name = document.getElementById("save-sim-name").value;
     const db = getDatabase(app);
     const reference = ref(db, 'sims/' + sim_name);
-    set(reference, {
-        _regions: regions,
-        _media: media,
-        _channels: channels 
-    });
+
+    set(reference, exportSim());
     console.log("Wrote data to database");
 }
+
 

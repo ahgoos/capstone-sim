@@ -59,6 +59,21 @@ class Meme {
       strokeWeight(1);
     }
   }
+
+  // method to export meme properties as JSON
+  toJSON() {
+    return {
+      name: this.name,
+      size: this.size,
+      origin: this.origin.name,
+      location: this.location.name,
+      pos: [this.pos.x, this.pos.y],
+      vel: [this.vel.x, this.vel.y],
+      drag: this.drag,
+      popularity: this.popularity,
+      format: this.format,
+      color: this.color.toString(),
+    };
+  }
 }
 
-// module.exports = { Meme };

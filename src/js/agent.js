@@ -4,6 +4,7 @@ class Agent {
         this.region = _region;
         this.influence = random(1, 10);
         this.archetype = _archetype;
+        this.vote_hist = [];
     }
 
     consume(meme) {
@@ -31,6 +32,16 @@ class Agent {
     downvote(meme) {
         meme.popularity -= this.influence;
         // print(this.name + " downvotes " + meme.name + " to: " + meme.popularity);
+    }
+
+    toJSON() {
+        return {
+            name: this.name,
+            region: this.region.name,
+            influence: this.influence,
+            archetype: this.archetype,
+            vote_hist: this.vote_hist
+        };
     }
 }
 
