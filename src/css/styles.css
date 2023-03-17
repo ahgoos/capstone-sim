@@ -78,13 +78,6 @@ h1 {
   padding: 25px 0;
 }
 
-#sim-context {
-  justify-content: center;
-  align-items: center;
-  font-size: 34pt;
-  height: fit-content;
-}
-
 h3 {
   font-size: 12pt;
   font-weight: 400;
@@ -152,6 +145,153 @@ i {
 h3>i {
   padding: 0 10px 0 5px;
   /* border: 1px solid red; */
+}
+
+.control-menu {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100px;
+  height: 100vh;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  /* border: 1px solid red; */
+  z-index: 5;
+}
+
+.control-menu .icon {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background: rgb(236, 236, 236);
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 2em;
+  transition: background 0.2s;
+}
+
+.icon.toggler {
+  width: 40px;
+  height: 40px;
+  font-size: 1.5em;
+}
+
+.icon:hover {
+  background: #fafafa;
+}
+
+.new-region {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid red; */
+}
+
+.toggler.active {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fafafa;
+
+  /* border: 1px solid red; */
+}
+
+.region-setup {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: #fafafa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  z-index: -1;
+  transition: transform 0.2s, width 0.2s, height 0.2s;
+  transition-delay: 0.3s, 0.1s, 0.1s;
+}
+
+.toggler.active~.region-setup {
+  width: 200px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  transform: translateX(-140px);
+  transition-delay: 0.1s, 0.3s, 0.3s;
+}
+
+.region-setup input {
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  width: 0;
+  border-radius: 3px 3px 0 0;
+  height: fit-content;
+  transition: width 0.2s;
+  transition-delay: 0s;
+}
+
+.region-setup input:hover {
+  background: #e6e6e6;
+}
+
+.toggler.active~.region-setup input {
+  width: auto;
+  transition-delay: 0.4s;
+}
+
+.prop-container {
+  visibility: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.prop-container i {
+  border: none;
+  cursor: pointer;
+  font-size: 1.5em;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.prop-container span {
+  width: 0;
+  transition: width 0.2s;
+  transition-delay: 0.5s
+}
+
+.toggler.active~.region-setup .prop-container span {
+  width: auto;
+}
+
+
+.prop-container input {
+  text-align: center;
+  padding: 0;
+  font-size: 11pt;
+  border: none;
+  border-radius: 3px;
+}
+
+.toggler.active~.region-setup .prop-container {
+  visibility: visible;
+  transition-delay: .4s;
 }
 
 .container {
@@ -255,4 +395,8 @@ h3+.togCheck:checked+.togButton {
   background: none;
   cursor: pointer;
   transition: 500ms;
+}
+
+::placeholder {
+  color: var(--c);
 }

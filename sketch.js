@@ -33,17 +33,55 @@ function mousePos() {
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
+function playPause(anchor) {
+  let icon = anchor.querySelector("i");
+  icon.classList.toggle("fa-pause");
+  icon.classList.toggle("fa-play");
+  if (isLooping()) {
+    noLoop();
+  } else {
+    loop();
+  }
+}
+
+function setupRegion(anchor) {
+  anchor.classList.toggle("active");
+  let icon = anchor.querySelector("i");
+  let name_input = document.getElementById("region-name");
+  name_input.value = fb.generateRegionName();
+  icon.classList.toggle("fa-map-pin");
+  icon.classList.toggle("fa-check");
+  let new_reg = new Region(name_input.value, 0, 0, 6);
+  new_reg.channels
+}
+
+function stepper(anchor) {
+  let id = anchor.getAttribute("id");
+  if (id.includes("pop")) {
+    var myInput = document.getElementById("region-pop");
+  } else if (id.includes("channel")) {
+    var myInput = document.getElementById("region-channels");
+  }
+  let min = myInput.getAttribute("min");
+  let max = myInput.getAttribute("max");
+  let step = myInput.getAttribute("step");
+  let val = myInput.getAttribute("value");
+  let calcStep = (id.includes("increment")) ? (step * 1) : (step * -1);
+  let newValue = parseInt(val) + calcStep;
+
+  if (newValue >= min && newValue <= max) {
+    myInput.setAttribute("value", newValue);
+  }
+}
 
 // MAKE INSTANCE TO RENDER ALL INFO THIS WAY
 let utils = new p5.Utils();
 
-
-
 function setup() {
-
   var cnv = createCanvas(windowWidth, windowHeight);
   cnv.parent("sketch-holder");
   background(230);
+  noLoop();
 
   // Create all media channels
   for (let k of media) {
@@ -51,7 +89,11 @@ function setup() {
   }
 
   // DOM elements
-  let name_field = ("save-sim-name");
+  // let btn = createButton("country").parent("about-card");
+  // btn.mousePressed(() => {
+  //   btn.html(fb.generateRegionName());
+  // });
+
 }
 
 function draw() {
@@ -136,14 +178,6 @@ function keyPressed(event) {
   // }
   // alert("key: " + keyCode);
   switch (keyCode) {
-    case 37:
-      break;
-    case 38:
-      break;
-    case 39:
-      break;
-    case 40:
-      break;
     case 32:
       t_idx++;
       tool = tools[t_idx % tools.length];
@@ -151,6 +185,11 @@ function keyPressed(event) {
       break;
     case 83:
       print("memes:", memes.length, "\nagents:", agents.length)
+      break;
+    case 8:
+      if (target instanceof Region) {
+        removeRegion(target);
+      }
       break;
     default:
       break;
@@ -161,15 +200,15 @@ function keyPressed(event) {
 function mousePressed() {
   if (tool == "edit") {
     if (target == null) {
-      let new_reg = new Region(regions.length, mousePos().x, mousePos().y, ceil(random(minp, maxp)));
+      var new_reg = new Region(fb.generateRegionName(), mousePos().x, mousePos().y, ceil(random(minp, maxp)));
       regions.push(new_reg);
       for (let ch of Object.keys(new_reg.channels)) {
-        // print(ch);
-        // channels[ch].add(new_reg);
         channels[ch].regions[new_reg.name] = new_reg;
       }
+      new_reg.display();
     }
   }
+
   if (tool == "inspect") {
     if (target instanceof Region) {
       let idx = regions.indexOf(target);
@@ -177,6 +216,7 @@ function mousePressed() {
       regions.push(target);
     }
   }
+  target = null;
 }
 
 function mouseDragged() {
@@ -214,4 +254,13 @@ function exportSim() {
   }
 
   return exportData;
+}
+
+function removeRegion(reg) {
+  let idx = regions.indexOf(reg);
+  regions.splice(idx, 1);
+  for (let ch of Object.keys(reg.channels)) {
+    delete channels[ch].regions[reg.name];
+    // print(channels[ch].regions);
+  }
 }

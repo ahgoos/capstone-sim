@@ -1,6 +1,6 @@
 class Region {
-  constructor(idx, x, y, population, freq = 0.01, threshold = 150) {
-    this.name = "R" + idx;
+  constructor(name, x, y, population, freq = 0.01, threshold = 150) {
+    this.name = name;
     this.pos = createVector(x, y);
     this.pop = population;
     this.agents = [];

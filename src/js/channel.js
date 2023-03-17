@@ -73,10 +73,17 @@ class Channel {
   update() {
     for (let k of Object.keys(this.paths)) {
       let path = this.paths[k];
-      let source = this.regions[split(k, ">")[0]];
+      // let source = this.regions[split(k, ">")[0]];
       let dest = this.regions[split(k, ">")[1]];
       for (let i = path.length - 1; i >= 0; i--) {
         let meme = path[i];
+        // Remove lost memes
+        if (dest == null) {
+          let idx = memes.indexOf(meme);
+          memes.splice(idx, 1);
+          path.splice(i, 1);
+          continue;
+        }
         let d = dist(meme.pos.x, meme.pos.y, dest.pos.x, dest.pos.y);
         meme.vel = p5.Vector.sub(dest.pos, meme.pos).mult(2 / d);
         if (d < dest.size) {
@@ -84,12 +91,7 @@ class Channel {
           dest.memes.push(meme);
           path.splice(i, 1);
         }
-        // Remove unpopular memes
-        // if (meme.popularity <= 0) {
-        //   let idx = memes.indexOf(meme);
-        //   memes.splice(idx, 1);
-        //   path.splice(i, 1);
-        // }
+
       }
       if (path.length <= 0) {
         delete this.paths[k];
@@ -106,6 +108,13 @@ class Channel {
       // Loop through backwards
       for (let i = path.length - 1; i >= 0; i--) {
         let meme = path[i];
+        // Remove lost memes
+        if (source == null) {
+          let idx = memes.indexOf(meme);
+          memes.splice(idx, 1);
+          path.splice(i, 1);
+          continue;
+        }
         if (i == path.length - 1) {
           meme.display(source.pos);
         }

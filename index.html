@@ -38,28 +38,56 @@
   <header>
     <div class="title">
       <img id="logo" src="./favicons/mstile-150x150.png"></img>
-      <h1>
-        Memescapes<span id="sim-context"></span>
-        </h1>
+      <h1>Memescapes</h1>
     </div>
     <div id="sketch-holder"></div>
   </header>
   <main>
+    <div class="control-menu">
+      <div class="icon play-pause" onclick="playPause(this)" onmouseover="tool='inspect'">
+        <i class="fa fa-play"></i>
+      </div>
+      <div class="new-region">
+        <div class="icon toggler" onclick="setupRegion(this)">
+          <i class="fa fa-map-pin"></i>
+        </div>
+        <div class="region-setup">
+          <!-- inputs -->
+          <input id="region-name" type="text" />
+          <div class="prop-container">
+            <span>Agents: </span>
+            <i id="pop-decrement" style="color: #e18585" class="fa fa-minus" onclick="stepper(this)"></i>
+            <input id="region-pop" type="number" min="0" max="12" step="1" value="6" readonly />
+            <i id="pop-increment" style="color: #9bca9a" class="fa fa-plus" onclick="stepper(this)"></i>
+          </div>
+          <div class="prop-container">
+            <span>Channels: </span>
+            <i id="channel-decrement" style="color: #e18585" class="fa fa-minus" onclick="stepper(this)"></i>
+            <input id="region-channels" type="number" min="1" max="5" step="1" value="2" readonly />
+            <i id="channel-increment" style="color: #9bca9a" class="fa fa-plus" onclick="stepper(this)"></i>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="container">
+
       <div class="card">
         <h3><i class="fa fa-info-circle"></i>About the Project</h3>
         <!-- (A) TOGGLE BUTTON -->
         <input id="about" type="checkbox" class="togCheck" checked />
         <label for="about" class="togButton"><i class="fa fa-caret-down"></i></label>
         <!-- (B) CONTENT -->
-        <div class="togContent">
+        <div id="about-card" class="togContent">
           <p>The background to this entire site is the canvas for a playable simulation to better
             understand the relationship between global media and the spread of cultural information
             across regions and over time.</p>
           <p>
-            The simulation is meant to help you understand the relationship between global media and cultural information
-            flow. Memetics is adopted as the representational framework for the macro-social model implemented in the simulation.
-            The project seeks to identify factors that influence the spread of cultural information, investigate the mechanisms
+            The simulation is meant to help you understand the relationship between global media and cultural
+            information
+            flow. Memetics is adopted as the representational framework for the macro-social model implemented in the
+            simulation.
+            The project seeks to identify factors that influence the spread of cultural information, investigate the
+            mechanisms
             that lead to emergent phenomena. You're encouraged to experiment anc explore different scenarios.
           </p>
           <p>
@@ -95,26 +123,10 @@
           <p>
             Explore different <i class="fa fa-circle-nodes"></i>scenarios to learn from:
           </p>
-          <ul>
-            <li><a href="#">Cultural Delays</a> - Test how far a Meme can travel, if given enough time</li>
-            <li><a href="#">Media Isolation</a> - Investigate how a lack of access to popular Channels affects small
-              Regions</li>
+          <ul id="scenarios-list">
           </ul>
         </div>
       </div>
-      <div class="card">
-        <h3><i class="fa fa-sliders"></i>Setup</h3>
-        <!-- (A) TOGGLE BUTTON -->
-        <input id="setup" type="checkbox" class="togCheck" />
-        <label for="setup" class="togButton"><i class="fa-solid fa-caret-down"></i></label>
-        <!-- (B) CONTENT -->
-        <div class="togContent">
-          <p style="color: rgb(215, 68, 68)">
-            <i style="color: rgb(215, 68, 68)" class="fa fa-hammer"></i> coming soon...
-          </p>
-        </div>
-      </div>
-
       <div class="card">
         <h3><i class="fa fa-puzzle-piece"></i>Experiments</h3>
         <!-- (A) TOGGLE BUTTON -->
@@ -124,6 +136,8 @@
         <div class="togContent">
           <input id="save-sim-name" type="text" placeholder="Name your experiment..." />
           <button id="save-sim" type="submit" onclick="fb.saveSim()">Save</button>
+          <ul id="experiments-list">
+          </ul>
         </div>
       </div>
       <div class="card">
