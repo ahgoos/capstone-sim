@@ -7,7 +7,7 @@
 
 // All the regions, channels, and memes
 let regions = [];
-let media = ["a", "b", "c", "d", "e"]; // Different types of channels (comms protocols)
+let media = ["wom", "print", "radio", "phone", "tv", "internet"]; // Different types of channels (comms protocols)
 let channels = {};
 let memes = [];
 let agents = [];
@@ -18,7 +18,6 @@ let maxp = 12;
 
 // UI tools
 let tools = ["inspect", "edit"];
-let status_check = false;
 let t_idx = 0;
 let tool = tools[t_idx];
 let target = null;
@@ -26,6 +25,8 @@ let xpan = 0;
 let ypan = 0;
 let cam_speed = 3;
 // let sz = 420;
+let running = false;
+
 
 function mousePos() {
   return createVector(mouseX - xpan, mouseY - ypan)
@@ -37,22 +38,42 @@ function playPause(anchor) {
   let icon = anchor.querySelector("i");
   icon.classList.toggle("fa-pause");
   icon.classList.toggle("fa-play");
-  if (isLooping()) {
-    noLoop();
-  } else {
-    loop();
+  running = !running;
+}
+
+function clearSim() {
+  regions = [];
+  channels = {};
+  memes = [];
+  agents = [];
+  for (let k of media) {
+    channels[k] = new Channel(k);
   }
 }
 
-function setupRegion(anchor) {
-  anchor.classList.toggle("active");
+function toggleClasses(anchor) {
+  // TODO: check active state
   let icon = anchor.querySelector("i");
-  let name_input = document.getElementById("region-name");
-  name_input.value = fb.generateRegionName();
   icon.classList.toggle("fa-map-pin");
-  icon.classList.toggle("fa-check");
-  let new_reg = new Region(name_input.value, 0, 0, 6);
-  new_reg.channels
+  icon.classList.toggle("fa-close");
+  if (!anchor.classList.contains("active")) {
+    let name_input = document.getElementById("region-name");
+    name_input.value = fb.generateRegionName();
+  }
+  anchor.classList.toggle("active");
+}
+
+function addRegion(anchor) {
+  let toggler = document.querySelector(".icon.toggler");
+  let name_input = document.getElementById("region-name");
+  let pop_input = document.getElementById("region-pop");
+  let channels_input = document.getElementById("region-channels");
+  let new_reg = new Region(name_input.value, width / 2, height / 2, pop_input.value, channels_input.value);
+  regions.push(new_reg);
+  for (let ch of Object.keys(new_reg.channels)) {
+    channels[ch].regions[new_reg.name] = new_reg;
+  }
+  toggleClasses(toggler);
 }
 
 function stepper(anchor) {
@@ -80,8 +101,7 @@ let utils = new p5.Utils();
 function setup() {
   var cnv = createCanvas(windowWidth, windowHeight);
   cnv.parent("sketch-holder");
-  background(230);
-  noLoop();
+  background(240);
 
   // Create all media channels
   for (let k of media) {
@@ -97,7 +117,7 @@ function setup() {
 }
 
 function draw() {
-  background(230);
+  background(240);
   if (keyIsDown(38)) { ypan += cam_speed };
   if (keyIsDown(39)) { xpan -= cam_speed };
   if (keyIsDown(40)) { ypan -= cam_speed };
@@ -110,14 +130,14 @@ function draw() {
 
   // Handle all regions
   for (let i = 0; i < regions.length; i++) {
-    regions[i].update();
+    if (running) regions[i].update();
     regions[i].display();
   }
 
   // Update all memes
   for (let i = memes.length - 1; i >= 0; i--) {
     let meme = memes[i];
-    meme.update();
+    if (running) meme.update();
     // If we should remove it from the global and local meme lists
     if (meme.popularity <= 0) {
       // print(meme.name + " died");
@@ -129,25 +149,12 @@ function draw() {
 
   // Handle all channels
   for (let x of media) {
-    channels[x].update();
+    if (running) channels[x].update();
     channels[x].display();
   }
 
-  // utils.debug({
-  //   "Tooltip": tool,
-  //   "FPS": frameRate().toFixed(0),
-  //   "Regions": regions.length,
-  //   "Agents": agents.length,
-  //   "Channels": media.length,
-  //   "Memes": memes.length,
-  //   "Coords": mousePos().x + "x" + mousePos().y
-  // });
   showData();
 }
-
-// function windowResized() {
-//   resizeCanvas(innerWidth, innerHeight);
-// }
 
 // === UTILS === //
 
@@ -155,7 +162,7 @@ function showData() {
   noStroke();
   if (target instanceof Region) {
     fill("rgba(157,178,189,0.59)");
-    rect(mousePos().x + 10, mousePos().y, 85, 90);
+    rect(mousePos().x + 10, mousePos().y, 85, 80);
     fill(0);
     textStyle(BOLD);
     text(target.name, mousePos().x + 15, mousePos().y + 15);
@@ -163,7 +170,7 @@ function showData() {
     text("Agents: " + target.pop, mousePos().x + 15, mousePos().y + 35);
     text("Channels: " + Object.keys(target.channels).length, mousePos().x + 15, mousePos().y + 50);
     text("Memes: " + target.memes.length, mousePos().x + 15, mousePos().y + 65);
-    text("Pos: " + target.pos.x + ", " + target.pos.y, mousePos().x + 15, mousePos().y + 80)
+    // text("Pos: " + target.pos.x + ", " + target.pos.y, mousePos().x + 15, mousePos().y + 80)
   }
 }
 
@@ -200,7 +207,7 @@ function keyPressed(event) {
 function mousePressed() {
   if (tool == "edit") {
     if (target == null) {
-      var new_reg = new Region(fb.generateRegionName(), mousePos().x, mousePos().y, ceil(random(minp, maxp)));
+      var new_reg = new Region(fb.generateRegionName(), mousePos().x, mousePos().y, ceil(random(minp, maxp)), ceil(random(media.length)));
       regions.push(new_reg);
       for (let ch of Object.keys(new_reg.channels)) {
         channels[ch].regions[new_reg.name] = new_reg;

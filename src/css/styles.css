@@ -166,23 +166,24 @@ h3>i {
 
 .control-menu .icon {
   position: relative;
-  width: 60px;
-  height: 60px;
-  background: rgb(236, 236, 236);
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: rgb(240, 240, 240);
   border-radius: 50%;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  font-size: 2em;
-  transition: background 0.2s;
+  font-size: 1.5em;
+  transition: background 0.3s 0s;
 }
 
-.icon.toggler {
-  width: 40px;
-  height: 40px;
-  font-size: 1.5em;
+.icon.play-pause {
+  width: 60px;
+  height: 60px;
+  font-size: 2em;
 }
 
 .icon:hover {
@@ -211,57 +212,79 @@ h3>i {
   position: absolute;
   width: 30px;
   height: 30px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
   background: #fafafa;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
   z-index: -1;
-  transition: transform 0.2s, width 0.2s, height 0.2s;
-  transition-delay: 0.3s, 0.1s, 0.1s;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    transform 0.4s 0.4s,
+    width 0.4s 0.1s,
+    height 0.4s 0.1s,
+    opacity 0.1s 1s;
 }
 
 .toggler.active~.region-setup {
+  opacity: 1;
   width: 200px;
-  height: 120px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px;
+  height: 180px;
   transform: translateX(-140px);
-  transition-delay: 0.1s, 0.3s, 0.3s;
+  transition:
+    transform 0.4s 0s,
+    width 0.4s 0.3s,
+    height 0.4s 0.3s,
+    opacity 0.1s 0s;
+  /* border: 1px solid red; */
 }
 
-.region-setup input {
+.region-setup .prop-container {
+  justify-content: space-between;
+  opacity: 0;
+  transition: opacity 0.3s 0s;
+  /* border: 1px solid red; */
+}
+
+.toggler.active~.region-setup .prop-container {
+  opacity: 1;
+  transition: opacity 0.3s 0.5s;
+}
+
+.prop-container input {
   position: relative;
   justify-content: center;
   align-items: center;
-  width: 0;
   border-radius: 3px 3px 0 0;
   height: fit-content;
-  transition: width 0.2s;
-  transition-delay: 0s;
 }
 
-.region-setup input:hover {
+.prop-container input:hover {
   background: #e6e6e6;
 }
 
-.toggler.active~.region-setup input {
-  width: auto;
-  transition-delay: 0.4s;
-}
-
 .prop-container {
-  visibility: hidden;
+  flex-grow: 1;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
+  align-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .prop-container i {
+  width: 20px;
+  height: 20px;
   border: none;
+  border-radius: 50%;
   cursor: pointer;
   font-size: 1.5em;
+}
+
+.prop-container i:hover {
+  -webkit-text-stroke: 3px;
 }
 
 input::-webkit-outer-spin-button,
@@ -270,28 +293,14 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-.prop-container span {
-  width: 0;
-  transition: width 0.2s;
-  transition-delay: 0.5s
-}
-
-.toggler.active~.region-setup .prop-container span {
-  width: auto;
-}
-
-
-.prop-container input {
+.prop-container input[type=number] {
   text-align: center;
-  padding: 0;
+  padding: 0px;
+  width: 22px;
   font-size: 11pt;
   border: none;
   border-radius: 3px;
-}
-
-.toggler.active~.region-setup .prop-container {
-  visibility: visible;
-  transition-delay: .4s;
+  cursor: default;
 }
 
 .container {
@@ -304,7 +313,6 @@ input::-webkit-inner-spin-button {
   height: fit-content;
   max-width: 80vw;
   max-height: 80vh;
-  transform: (180);
 }
 
 
@@ -324,7 +332,7 @@ input::-webkit-inner-spin-button {
 .card {
   position: relative;
   /* border: .5px dashed #666; */
-  background-color: #d7d7d7c8;
+  background-color: #e3e3e3c8;
   border-radius: 0px 15px 15px 0px;
   margin: 10px;
   padding: 5px 50px 5px 5px;

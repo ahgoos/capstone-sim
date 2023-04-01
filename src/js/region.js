@@ -1,5 +1,5 @@
 class Region {
-  constructor(name, x, y, population, freq = 0.01, threshold = 150) {
+  constructor(name, x, y, population, ch_count, freq = 0.01, threshold = 150) {
     this.name = name;
     this.pos = createVector(x, y);
     this.pop = population;
@@ -11,7 +11,7 @@ class Region {
     }
     this.size = this.pop * 5;
     this.channels = {};
-    for (let i = 0; i < map(this.pop, minp + 1, maxp, 1, media.length); i++) {
+    for (let i = 0; i < ch_count; i++) {
       this.channels[media[i]] = channels[media[i]];
     }
     // Dynamic color setting
@@ -55,9 +55,15 @@ class Region {
 
 
   display() {
+    push();
     stroke(alpha(this.color));
     fill(this.color);
     ellipse(this.pos.x, this.pos.y, this.size * 2, this.size * 2);
+    fill(80);
+    noStroke();
+    rectMode(CENTER);
+    text(this.name, this.pos.x, this.pos.y + this.size + 10, this.name.length * 6, 14);
+    pop();
     let d = dist(this.pos.x, this.pos.y, mousePos().x, mousePos().y);
     if (d < this.size) {
       target = this;

@@ -10,20 +10,23 @@ class Meme {
     this.popularity = 200;
     this.format = format;
     switch (format) {
-      case 'a':
+      case 'wom':
         this.color = color('#FF9800');
         break;
-      case 'b':
+      case 'print':
         this.color = color('#FFEB3B');
         break;
-      case 'c':
+      case 'radio':
         this.color = color('#4CAF50');
         break;
-      case 'd':
+      case 'phone':
         this.color = color('#F44336');
         break;
-      case 'e':
+      case 'tv':
         this.color = color('#3F51B5');
+        break;
+      case 'internet':
+        this.color = color('#35F1B5');
         break;
       default:
         this.color = color('black');

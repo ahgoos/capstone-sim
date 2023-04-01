@@ -44,28 +44,40 @@
   </header>
   <main>
     <div class="control-menu">
+      <div class="icon clear-sim" onclick="clearSim()">
+        <i class="fa fa-trash"></i>
+      </div>
       <div class="icon play-pause" onclick="playPause(this)" onmouseover="tool='inspect'">
         <i class="fa fa-play"></i>
       </div>
       <div class="new-region">
-        <div class="icon toggler" onclick="setupRegion(this)">
+        <div class="icon toggler" onclick="toggleClasses(this)">
           <i class="fa fa-map-pin"></i>
         </div>
         <div class="region-setup">
           <!-- inputs -->
-          <input id="region-name" type="text" />
+          <div class="prop-container">
+            <input id="region-name" type="text" />
+          </div>
           <div class="prop-container">
             <span>Agents: </span>
-            <i id="pop-decrement" style="color: #e18585" class="fa fa-minus" onclick="stepper(this)"></i>
-            <input id="region-pop" type="number" min="0" max="12" step="1" value="6" readonly />
-            <i id="pop-increment" style="color: #9bca9a" class="fa fa-plus" onclick="stepper(this)"></i>
+            <div>
+              <i id="pop-decrement" style="color: #e18585" class="fa fa-minus" onclick="stepper(this)"></i>
+              <input id="region-pop" type="number" min="0" max="12" step="1" value="6" readonly />
+              <i id="pop-increment" style="color: #9bca9a" class="fa fa-plus" onclick="stepper(this)"></i>
+              </div>
           </div>
           <div class="prop-container">
             <span>Channels: </span>
-            <i id="channel-decrement" style="color: #e18585" class="fa fa-minus" onclick="stepper(this)"></i>
-            <input id="region-channels" type="number" min="1" max="5" step="1" value="2" readonly />
-            <i id="channel-increment" style="color: #9bca9a" class="fa fa-plus" onclick="stepper(this)"></i>
+            <div>
+              <i id="channel-decrement" style="color: #e18585" class="fa fa-minus" onclick="stepper(this)"></i>
+              <input id="region-channels" type="number" min="1" max="6" step="1" value="3" readonly />
+              <i id="channel-increment" style="color: #9bca9a" class="fa fa-plus" onclick="stepper(this)"></i>
+            </div>
           </div>
+          <button class="indicator" type="button" onclick="addRegion(this)">
+            <i class="fa fa-check"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -135,7 +147,7 @@
         <!-- (B) CONTENT -->
         <div class="togContent">
           <input id="save-sim-name" type="text" placeholder="Name your experiment..." />
-          <button id="save-sim" type="submit" onclick="fb.saveSim()">Save</button>
+          <button id="save-sim" type="button" onclick="fb.saveSim()">Save</button>
           <ul id="experiments-list">
           </ul>
         </div>
