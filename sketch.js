@@ -17,7 +17,7 @@ let minp = 2;
 let maxp = 12;
 
 // UI tools
-let tools = ["inspect", "edit"];
+let tools = ["inspect", "move"];
 let t_idx = 0;
 let tool = tools[t_idx];
 let target = null;
@@ -63,17 +63,22 @@ function toggleClasses(anchor) {
   anchor.classList.toggle("active");
 }
 
-function addRegion(anchor) {
-  let toggler = document.querySelector(".icon.toggler");
-  let name_input = document.getElementById("region-name");
-  let pop_input = document.getElementById("region-pop");
-  let channels_input = document.getElementById("region-channels");
-  let new_reg = new Region(name_input.value, width / 2, height / 2, pop_input.value, channels_input.value);
+function addRegion(anchor, new_reg) {
+  // print(anchor, new_reg)
+  if (anchor !== null) {
+    // print("Button Click!")
+    tool = "move";
+    let toggler = document.querySelector(".icon.toggler");
+    toggleClasses(toggler);
+    let name_input = document.getElementById("region-name");
+    let pop_input = document.getElementById("region-pop");
+    let channels_input = document.getElementById("region-channels");
+    var new_reg = new Region(name_input.value, mousePos().x, mousePos().y, pop_input.value, channels_input.value);
+  }
   regions.push(new_reg);
   for (let ch of Object.keys(new_reg.channels)) {
     channels[ch].regions[new_reg.name] = new_reg;
   }
-  toggleClasses(toggler);
 }
 
 function stepper(anchor) {
@@ -130,7 +135,7 @@ function draw() {
 
   // Handle all regions
   for (let i = 0; i < regions.length; i++) {
-    if (running) regions[i].update();
+    if (running) { regions[i].update(); }
     regions[i].display();
   }
 
@@ -162,22 +167,30 @@ function showData() {
   noStroke();
   if (target instanceof Region) {
     fill("rgba(157,178,189,0.59)");
-    rect(mousePos().x + 10, mousePos().y, 85, 80);
-    fill(0);
-    textStyle(BOLD);
-    text(target.name, mousePos().x + 15, mousePos().y + 15);
-    textStyle(NORMAL);
-    text("Agents: " + target.pop, mousePos().x + 15, mousePos().y + 35);
-    text("Channels: " + Object.keys(target.channels).length, mousePos().x + 15, mousePos().y + 50);
-    text("Memes: " + target.memes.length, mousePos().x + 15, mousePos().y + 65);
-    // text("Pos: " + target.pos.x + ", " + target.pos.y, mousePos().x + 15, mousePos().y + 80)
+    if (tool == "move") {
+      rect(mousePos().x + 10, mousePos().y, 120, 24);
+      fill(0);
+      text("Place", mousePos().x + 15, mousePos().y + 15);
+      textStyle(BOLD);
+      text(target.name, mousePos().x + 48, mousePos().y + 15);
+      textStyle(NORMAL);
+    } else {
+      rect(mousePos().x + 10, mousePos().y, 85, 80);
+      fill(0);
+      textStyle(BOLD);
+      text(target.name, mousePos().x + 15, mousePos().y + 15);
+      textStyle(NORMAL);
+      text("Agents: " + target.pop, mousePos().x + 15, mousePos().y + 35);
+      text("Channels: " + Object.keys(target.channels).length, mousePos().x + 15, mousePos().y + 50);
+      text("Memes: " + target.memes.length, mousePos().x + 15, mousePos().y + 65);
+      // text("Pos: " + target.pos.x + ", " + target.pos.y, mousePos().x + 15, mousePos().y + 80)
+    }
   }
 }
 
 
 
-
-// Change tooltip on key press
+// Handle key presses
 function keyPressed(event) {
   let cmd_keys = [37, 38, 39, 40, 32];
   // if (cmd_keys.includes(keyCode)) {
@@ -186,9 +199,10 @@ function keyPressed(event) {
   // alert("key: " + keyCode);
   switch (keyCode) {
     case 32:
-      t_idx++;
-      tool = tools[t_idx % tools.length];
-      print(tool);
+      // t_idx++;
+      // tool = tools[t_idx % tools.length];
+      // print(tool);
+      event.preventDefault();
       break;
     case 83:
       print("memes:", memes.length, "\nagents:", agents.length)
@@ -203,16 +217,11 @@ function keyPressed(event) {
   }
 }
 
-// Add element on mouse press
+// Place or move Region on mouse press
 function mousePressed() {
-  if (tool == "edit") {
-    if (target == null) {
-      var new_reg = new Region(fb.generateRegionName(), mousePos().x, mousePos().y, ceil(random(minp, maxp)), ceil(random(media.length)));
-      regions.push(new_reg);
-      for (let ch of Object.keys(new_reg.channels)) {
-        channels[ch].regions[new_reg.name] = new_reg;
-      }
-      new_reg.display();
+  if (tool == "move") {
+    if (target instanceof Region) {
+      tool = "inspect";
     }
   }
 
@@ -226,24 +235,19 @@ function mousePressed() {
   target = null;
 }
 
-function mouseDragged() {
-  if (tool == "edit") {
-    if (target == null) {
-
-    }
-  }
-  if (tool == "inspect") {
+function mouseMoved() {
+  if (tool == "move") {
     if (target instanceof Region) {
       target.move(mousePos().x, mousePos().y);
     }
   }
 }
 
-function mouseReleased() {
-  if (tool == "edit") {
-  }
+function mouseDragged() {
   if (tool == "inspect") {
-
+    if (target instanceof Region) {
+      target.move(mousePos().x, mousePos().y);
+    }
   }
 }
 

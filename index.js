@@ -72,25 +72,23 @@ export function getScenario(key) {
 
 function loadSim(snapshot) {
     // clear existing sim
-    media = [];
+    // media = [];
     channels = {};
     memes = [];
     regions = [];
     agents = [];
     let sim = snapshot.val();
-    media = sim._media;
+    // media = sim._media;
     for (let k of media) {
         channels[k] = new Channel(k);
     }
+    // console.log(channels);
     sim._regions.forEach(reg => {
         let new_reg = new Region(reg.name, reg.pos.x, reg.pos.y, reg.pop);
-        regions.push(new_reg);
-        for (let ch of Object.keys(new_reg.channels)) {
-            channels[ch].regions[new_reg.name] = new_reg;
-        }
-        new_reg.display();
+        addRegion(null, new_reg);
+        // new_reg.display();
     });
-    console.log(sim);
+    // console.log(sim);
 
 }
 

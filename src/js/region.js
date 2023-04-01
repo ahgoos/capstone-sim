@@ -11,9 +11,16 @@ class Region {
     }
     this.size = this.pop * 5;
     this.channels = {};
-    for (let i = 0; i < ch_count; i++) {
-      this.channels[media[i]] = channels[media[i]];
+    if (ch_count) {
+      for (let i = 0; i < ch_count; i++) {
+        this.channels[media[i]] = channels[media[i]];
+      }
+    } else {
+      for (let i = 0; i < map(this.pop, minp + 1, maxp, 1, media.length); i++) {
+        this.channels[media[i]] = channels[media[i]];
+      }
     }
+
     // Dynamic color setting
     this.color = color(random(0, floor(255 * (mouseX / width))), random(0, 165), random(37, 180), 180);
     this.spawn_rate = freq;
