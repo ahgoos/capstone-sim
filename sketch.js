@@ -79,6 +79,10 @@ function addRegion(anchor, new_reg) {
   for (let ch of Object.keys(new_reg.channels)) {
     channels[ch].regions[new_reg.name] = new_reg;
   }
+  chart.data.labels.push(new_reg.name);
+  chart.data.datasets[0].data.push(Object.keys(new_reg.memes).length);
+  chart.data.datasets[0].backgroundColor.push(new_reg.color.toString());
+  chart.update();
 }
 
 function stepper(anchor) {
@@ -135,7 +139,12 @@ function draw() {
 
   // Handle all regions
   for (let i = 0; i < regions.length; i++) {
-    if (running) { regions[i].update(); }
+    if (running) {
+      regions[i].update();
+      let ch_idx = chart.data.labels.indexOf(regions[i].name);
+      chart.data.datasets[0].data[ch_idx] = Object.keys(regions[i].memes).length;
+      chart.update();
+    }
     regions[i].display();
   }
 
@@ -148,6 +157,7 @@ function draw() {
       // print(meme.name + " died");
       let idx = meme.location.memes.indexOf(meme);
       meme.location.memes.splice(idx, 1);
+
       memes.splice(i, 1);
     }
   }
@@ -157,7 +167,7 @@ function draw() {
     if (running) channels[x].update();
     channels[x].display();
   }
-
+  chart.update();
   showData();
 }
 

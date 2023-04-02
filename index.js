@@ -153,3 +153,4 @@ export function generateRegionName() {
     return new_name.charAt(0).toUpperCase() + new_name.slice(1);
 }
 
+

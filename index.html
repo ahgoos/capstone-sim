@@ -11,23 +11,13 @@
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="theme-color" content="#ffd7d7">
   <!-- LIBS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
   <script src="src/lib/p5.utils.js"></script>
   <script src="src/lib/p5.timer.js"></script>
   <script src="src/lib/quicksettings.js"></script>
   <script src="src/lib/p5.gui.js"></script>
-  <!-- SCRIPTS -->
-  <script type="module" src="index.js"></script>
-  <script type="module">
-    import * as fireb from "./index.js";
-    window.fb = fireb;
-  </script>
-  <script src="sketch.js"></script>
-  <script src="src/js/agent.js"></script>
-  <script src="src/js/channel.js"></script>
-  <script src="src/js/meme.js"></script>
-  <script src="src/js/region.js"></script>
   <!-- STYLING -->
   <script src="https://kit.fontawesome.com/5456001138.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" type="text/css" href="src/css/styles.css" />
@@ -65,7 +55,7 @@
               <i id="pop-decrement" style="color: #e18585" class="fa fa-minus" onclick="stepper(this)"></i>
               <input id="region-pop" type="number" min="0" max="12" step="1" value="6" readonly />
               <i id="pop-increment" style="color: #9bca9a" class="fa fa-plus" onclick="stepper(this)"></i>
-              </div>
+            </div>
           </div>
           <div class="prop-container">
             <span>Channels: </span>
@@ -82,7 +72,6 @@
       </div>
     </div>
     <div class="container">
-
       <div class="card">
         <h3><i class="fa fa-info-circle"></i>About the Project</h3>
         <!-- (A) TOGGLE BUTTON -->
@@ -175,6 +164,11 @@
         </div>
       </div>
     </div>
+    <div class="stats-container">
+      <div class="graph-box">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
   </main>
 
   <footer>
@@ -182,6 +176,16 @@
     <p>Created by <a href="mailto:aguspdc@uni.minerva.edu">Agustin Perez del Castillo</a></p>
   </footer>
 </body>
-
-
+<!-- SCRIPTS -->
+<script type="module" src="index.js"></script>
+<script type="module">
+  import * as fireb from "./index.js";
+  window.fb = fireb;
+</script>
+<script src="sketch.js"></script>
+<script src="src/js/agent.js"></script>
+<script src="src/js/channel.js"></script>
+<script src="src/js/meme.js"></script>
+<script src="src/js/region.js"></script>
+<script src="src/js/my_chart.js"></script>
 </html>
