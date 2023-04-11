@@ -159,7 +159,7 @@ h3>i {
   bottom: 0;
   left: 0;
   margin: 10px;
-  width: 300px;
+  width: fit-content;
   height: 160px;
   /* border: 1px solid red; */
 }
@@ -167,6 +167,7 @@ h3>i {
 .graph-box {
   display: flex;
   flex-direction: column;
+  width: fit-content;
   height: 100%;
   padding: 10px;
   gap: 10px;
