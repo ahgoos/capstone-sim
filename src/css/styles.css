@@ -171,7 +171,7 @@ h3>i {
   height: 100%;
   padding: 10px;
   gap: 10px;
-  background: transparent;
+  background: rgb(240, 240, 240);
   border: 1px solid #b9b9b9;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
